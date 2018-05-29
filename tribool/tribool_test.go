@@ -14,7 +14,7 @@ func TestStringer(test *testing.T) {
 	}{
 		{True, "true", false},
 		{False, "false", false},
-		{Inderminate, "inderminate", false},
+		{Indeterminate, "indeterminate", false},
 		{triboolImpl(123), "", true},
 		{0, "false", false},
 	}
@@ -52,8 +52,8 @@ func Test_Tribool_MarshalJSON(t *testing.T) {
 			want:    []byte(`{"tribool_value":"false"}`),
 		},
 		{
-			tribool: Inderminate,
-			want:    []byte(`{"tribool_value":"inderminate"}`),
+			tribool: Indeterminate,
+			want:    []byte(`{"tribool_value":"indeterminate"}`),
 		},
 	}
 	for _, tt := range tests {
@@ -87,8 +87,8 @@ func Test_Tribool_UnmarshalJSON(t *testing.T) {
 			expected: False,
 		},
 		{
-			args:     []byte(`{"tribool_value": "inderminate"} `),
-			expected: Inderminate,
+			args:     []byte(`{"tribool_value": "indeterminate"} `),
+			expected: Indeterminate,
 		},
 		{
 			args:    []byte(`asd as e`),
@@ -126,7 +126,7 @@ func Test_triboolImpl_IsTrue(t *testing.T) {
 			want:    false,
 		},
 		{
-			tribool: Inderminate,
+			tribool: Indeterminate,
 			want:    false,
 		},
 	}
@@ -154,7 +154,7 @@ func Test_triboolImpl_IsFalse(t *testing.T) {
 			want:    true,
 		},
 		{
-			tribool: Inderminate,
+			tribool: Indeterminate,
 			want:    false,
 		},
 	}
@@ -182,14 +182,14 @@ func Test_triboolImpl_IsInderminate(t *testing.T) {
 			want:    false,
 		},
 		{
-			tribool: Inderminate,
+			tribool: Indeterminate,
 			want:    true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.tribool.IsInderminate(); got != tt.want {
-				t.Errorf("triboolImpl.IsInderminate() = %v, want %v", got, tt.want)
+			if got := tt.tribool.IsIndeterminate(); got != tt.want {
+				t.Errorf("triboolImpl.IsIndeterminate() = %v, want %v", got, tt.want)
 			}
 		})
 	}

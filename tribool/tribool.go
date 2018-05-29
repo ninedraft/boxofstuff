@@ -17,7 +17,7 @@ var ErrInvalidJSONRepresentation = errors.New("invalid JSON representation")
 const (
 	False triboolImpl = iota
 	True
-	Inderminate
+	Indeterminate
 )
 
 func (tribool triboolImpl) boop() {}
@@ -28,8 +28,8 @@ func (tribool triboolImpl) String() string {
 		return "true"
 	case False:
 		return "false"
-	case Inderminate:
-		return "inderminate"
+	case Indeterminate:
+		return "indeterminate"
 	default:
 		panic(fmt.Errorf("undefined tribool value %d", tribool))
 	}
@@ -47,8 +47,8 @@ func (tribool triboolImpl) IsFalse() bool {
 	return tribool == False
 }
 
-func (tribool triboolImpl) IsInderminate() bool {
-	return tribool == Inderminate
+func (tribool triboolImpl) IsIndeterminate() bool {
+	return tribool == Indeterminate
 }
 
 type _TriboolJSON struct {
@@ -69,8 +69,8 @@ func (tribool *triboolImpl) UnmarshalJSON(data []byte) error {
 		*tribool = True
 	case "false":
 		*tribool = False
-	case "inderminate":
-		*tribool = Inderminate
+	case "indeterminate":
+		*tribool = Indeterminate
 	default:
 		return ErrInvalidJSONRepresentation
 	}
