@@ -11,7 +11,7 @@ type Tribool interface {
 	json.Unmarshaler
 	IsTrue() bool
 	IsFalse() bool
-	IsInderminate() bool
+	IsIndeterminate() bool
 
 	boop()
 }
