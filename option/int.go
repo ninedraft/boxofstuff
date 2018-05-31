@@ -1,6 +1,9 @@
 package option
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strconv"
+)
 
 type Int struct {
 	haveValue bool
@@ -73,14 +76,40 @@ func (i Int) Chan() <-chan int {
 }
 
 func (i Int) MarshalJSON() ([]byte, error) {
+	if i.Empty() {
+		return []byte("null"), nil
+	}
 	return json.Marshal(i.value)
 }
 
 func (i *Int) UnmarshalJSON(p []byte) error {
-	var s int
+	var s string
 	if err := json.Unmarshal(p, &s); err != nil {
 		return err
 	}
-	i.value = s
+	if v, err := strconv.Atoi(s); err != nil {
+		i.value = v
+		i.haveValue = true
+	}
+	return nil
+}
+
+func (i Int) MarshalText() ([]byte, error) {
+	if i.Empty() {
+		return []byte(""), nil
+	}
+	return []byte(strconv.Itoa(i.value)), nil
+}
+
+func (i *Int) UnmarshalText(p []byte) error {
+	var s = string(p)
+	if s != "" {
+		var value, err = strconv.Atoi(s)
+		if err != nil {
+			return err
+		}
+		i.value = value
+		i.haveValue = true
+	}
 	return nil
 }

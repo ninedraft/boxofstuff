@@ -82,12 +82,12 @@ func TestString_MarshalJSON(t *testing.T) {
 		Username String
 	}
 	var in = user{
-		Username: StrValue("merlin"),
+		Username: StrNone(),
 	}
 	data, err := json.Marshal(in)
 	t.Log(string(data), err)
 
 	var out user
 	json.Unmarshal(data, &out)
-	t.Log(out.Username.Empty())
+	t.Log(out, out.Username.Empty())
 }

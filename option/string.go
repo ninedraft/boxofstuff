@@ -1,6 +1,9 @@
 package option
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strconv"
+)
 
 type String struct {
 	haveValue bool
@@ -73,6 +76,9 @@ func (str String) Chan() <-chan string {
 }
 
 func (str String) MarshalJSON() ([]byte, error) {
+	if str.Empty() {
+		return []byte("null"), nil
+	}
 	return json.Marshal(str.value)
 }
 
@@ -81,8 +87,29 @@ func (str *String) UnmarshalJSON(p []byte) error {
 	if err := json.Unmarshal(p, &s); err != nil {
 		return err
 	}
-	if s != "" {
+	if s != "null" && s != "" {
 		str.value = s
+		str.haveValue = true
+	}
+	return nil
+}
+
+func (str String) MarshalText() ([]byte, error) {
+	if str.Empty() {
+		return []byte(""), nil
+	}
+	return []byte(strconv.QuoteToASCII(str.value)), nil
+}
+
+func (str *String) UnmarshalText(p []byte) error {
+	var s = string(p)
+	if s != "" {
+		var value, err = strconv.Unquote(s)
+		if err != nil {
+			return err
+		}
+		str.value = value
+		str.haveValue = true
 	}
 	return nil
 }
