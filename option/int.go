@@ -83,14 +83,15 @@ func (i Int) MarshalJSON() ([]byte, error) {
 }
 
 func (i *Int) UnmarshalJSON(p []byte) error {
-	var s string
-	if err := json.Unmarshal(p, &s); err != nil {
+	if string(p) == "null" {
+		return nil
+	}
+	var value int
+	if err := json.Unmarshal(p, &value); err != nil {
 		return err
 	}
-	if v, err := strconv.Atoi(s); err != nil {
-		i.value = v
-		i.haveValue = true
-	}
+	i.value = value
+	i.haveValue = true
 	return nil
 }
 
@@ -112,4 +113,11 @@ func (i *Int) UnmarshalText(p []byte) error {
 		i.haveValue = true
 	}
 	return nil
+}
+
+func (i Int) String() string {
+	if i.Empty() {
+		return ""
+	}
+	return strconv.Itoa(i.Int())
 }

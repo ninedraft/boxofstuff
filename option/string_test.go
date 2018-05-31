@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-	"encoding/json"
 )
 
 func TestStrNone(test *testing.T) {
@@ -75,19 +74,4 @@ func TestString_Slice(t *testing.T) {
 			t.Errorf(`StrValue("boop").Slice(): expected "boop", got %v`, v)
 		}
 	}
-}
-
-func TestString_MarshalJSON(t *testing.T) {
-	type user struct {
-		Username String
-	}
-	var in = user{
-		Username: StrNone(),
-	}
-	data, err := json.Marshal(in)
-	t.Log(string(data), err)
-
-	var out user
-	json.Unmarshal(data, &out)
-	t.Log(out, out.Username.Empty())
 }

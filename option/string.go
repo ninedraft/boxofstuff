@@ -83,11 +83,13 @@ func (str String) MarshalJSON() ([]byte, error) {
 }
 
 func (str *String) UnmarshalJSON(p []byte) error {
+	if string(p) == "null" {
+		return nil
+	}
 	var s string
 	if err := json.Unmarshal(p, &s); err != nil {
 		return err
-	}
-	if s != "null" && s != "" {
+	} else {
 		str.value = s
 		str.haveValue = true
 	}

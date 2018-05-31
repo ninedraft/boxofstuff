@@ -83,14 +83,15 @@ func (float Float) MarshalJSON() ([]byte, error) {
 }
 
 func (float *Float) UnmarshalJSON(p []byte) error {
-	var s string
-	if err := json.Unmarshal(p, &s); err != nil {
+	if string(p) == "null" {
+		return nil
+	}
+	var value float64
+	if err := json.Unmarshal(p, &value); err != nil {
 		return err
 	}
-	if v, err := strconv.ParseFloat(s, 64); err != nil {
-		float.value = v
-		float.haveValue = true
-	}
+	float.value = value
+	float.haveValue = true
 	return nil
 }
 
@@ -112,4 +113,11 @@ func (float *Float) UnmarshalText(p []byte) error {
 		float.haveValue = true
 	}
 	return nil
+}
+
+func (float Float) String() string {
+	if float.Empty() {
+		return ""
+	}
+	return strconv.FormatFloat(float.Float(), 'e', -1, 64)
 }

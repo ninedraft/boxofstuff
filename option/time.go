@@ -83,15 +83,15 @@ func (t Time) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Time) UnmarshalJSON(p []byte) error {
-	var s string
-	if err := json.Unmarshal(p, &s); err != nil {
+	var value time.Time
+	if string(p) == "null" {
+		return nil
+	}
+	if err := json.Unmarshal(p, &value); err != nil {
 		return err
 	}
-	var value time.Time
-	if err := value.UnmarshalJSON(p); err != nil {
-		t.value = value
-		t.haveValue = true
-	}
+	t.value = value
+	t.haveValue = true
 	return nil
 }
 
@@ -113,4 +113,11 @@ func (t *Time) UnmarshalText(p []byte) error {
 		t.haveValue = true
 	}
 	return nil
+}
+
+func (t Time) String() string {
+	if t.Empty() {
+		return ""
+	}
+	return t.value.String()
 }
