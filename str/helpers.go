@@ -14,7 +14,7 @@ func Match(re string) func(str string) bool {
 }
 
 func Len(str string) int {
-	return len(str)
+	return utf8.RuneCountInString(str)
 }
 
 func StrictLess(a, b string) bool {
