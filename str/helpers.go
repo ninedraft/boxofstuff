@@ -75,6 +75,12 @@ func Longer(l uint) func(str string) bool {
 	}
 }
 
+func EqLen(l uint) func(str string) bool {
+	return func(str string) bool {
+		return l == uint(utf8.RuneCountInString(str))
+	}
+}
+
 func Chop(l uint) func(str string) []string {
 	switch l {
 	case 0:
