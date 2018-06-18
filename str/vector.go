@@ -164,3 +164,13 @@ func (vector Vector) Top(n uint) Vector {
 	}
 	return sorted[:n].Copy()
 }
+
+func (vector Vector) Classify(key func(str string) string) map[string][]string {
+	vector = vector.Unique()
+	var classes = make(map[string][]string, len(vector))
+	for _, str := range vector {
+		var k = key(str)
+		classes[k] = append(classes[k], str)
+	}
+	return classes
+}
