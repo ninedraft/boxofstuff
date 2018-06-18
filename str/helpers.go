@@ -82,8 +82,8 @@ func Chop(l uint) func(str string) []string {
 	case 1:
 		return func(str string) []string {
 			var chunks = make([]string, 0, len(str))
+			var buf = make([]byte, utf8.UTFMax)
 			for _, r := range str {
-				var buf = make([]byte, utf8.UTFMax)
 				var n = utf8.EncodeRune(buf, r)
 				chunks = append(chunks, string(buf[:n]))
 			}
