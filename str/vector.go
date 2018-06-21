@@ -213,3 +213,17 @@ func (vector Vector) ToErrs() []error {
 	}
 	return errs
 }
+
+func (vector Vector) Head(n uint) Vector {
+	if uint(vector.Len()) < n {
+		return vector.Copy()
+	}
+	return vector[:n].Copy()
+}
+
+func (vector Vector) Tail(n uint) Vector {
+	if uint(vector.Len()) <= n {
+		return vector.Copy()
+	}
+	return vector[n:].Copy()
+}
