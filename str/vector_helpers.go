@@ -183,6 +183,15 @@ func Chop(l uint) func(str string) []string {
 	}
 }
 
+func ReplaceTable(replaceTable map[string]string) func(str string) string {
+	return func(str string) string {
+		if repl, ok := replaceTable[str]; ok {
+			return repl
+		}
+		return str
+	}
+}
+
 func curry2(a string, f func(a, b string) string) func(str string) string {
 	return func(b string) string {
 		return f(a, b)
