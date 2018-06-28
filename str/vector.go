@@ -243,7 +243,10 @@ func FromChan(ch <-chan string, timeout time.Duration) Vector {
 	var vec = make(Vector, 0, 16)
 	for {
 		select {
-		case s := <-ch:
+		case s, ok := <-ch:
+			if !ok {
+				break
+			}
 			vec = append(vec, s)
 		case <-time.Tick(timeout):
 			break
