@@ -13,6 +13,7 @@ import (
 func Every(t time.Duration, action func()) (stop func()) {
 	var ticker = NewTicker(t)
 	go func() {
+		defer ticker.Stop()
 		for ticker.Await() {
 			action()
 		}
