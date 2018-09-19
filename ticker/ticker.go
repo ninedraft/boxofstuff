@@ -10,6 +10,16 @@ import (
 	"time"
 )
 
+func Every(t time.Duration, action func()) (stop func()) {
+	var ticker = NewTicker(t)
+	go func() {
+		for ticker.Await() {
+			action()
+		}
+	}()
+	return ticker.Stop
+}
+
 type Ticker struct {
 	events chan time.Time
 	stop   chan struct{}
@@ -27,7 +37,11 @@ func NewTicker(step time.Duration) Ticker {
 }
 
 func (ticker Ticker) Start() {
-	ticker.tick()
+	go ticker.tick()
+}
+
+func (ticker Ticker) StartAfter(t time.Duration) {
+	time.AfterFunc(t, ticker.tick)
 }
 
 func (ticker Ticker) Stop() {
